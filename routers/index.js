@@ -121,10 +121,10 @@ router.post('/refreshqr', urlencodedParser, (req,res)=>{
           const d = new Date()
           const ID = email.slice(0, 9)
           User.findOneAndUpdate({ email: email }, {QRCODE: ID.concat(d)})
-          res.status(200)
+          res.status(200).send()
         }else{
           console.log('err');
-          res.status(500)
+          res.status(500).send()
         }
 })
 // exporting module for app.js
