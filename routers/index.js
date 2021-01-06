@@ -85,24 +85,22 @@ router.get('/contacts', (req, res) => {
     }
   })
 })
-router.get('/dailyevents', (req, res) => {
-  Event.find({ Dailyevent: true }, (err, result) => {
-    if (err) {
-      console.log(err)
-    } else {
-      res.json(result)
-    }
+router.get('/events', (req, res) => { 
+  var result = [];
+   Event.find({ Dailyevent: true }, (err, result1) => 
+   { if (err) 
+    { console.log(err) }
+     else 
+     { result.push(result1) } })
+     Event.find({ Dailyevent: false }, (err, result2) => 
+     { if (err) 
+      { console.log(err) } 
+      else 
+      { result.push(result2) 
+        res.json(result); 
+      } 
+    }) 
   })
-})
-router.get('/mainevents', (req, res) => {
-  Event.find({ Dailyevent: false }, (err, result) => {
-    if (err) {
-      console.log(err)
-    } else {
-      res.json(result)
-    }
-  })
-})
 router.post('/events', (req, res) => {
   const nevent = new Event({
     Title: req.body.title,
