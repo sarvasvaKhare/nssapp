@@ -114,5 +114,15 @@ router.post('/events', (req, res) => {
     Dailyevent: req.body.event
   })
 })
+router.post('/refreshqr', (req,res)=>{
+  const email = req.body.email;
+  const user = await User.findOne({ email: email })
+        if (user) {
+          const d = new Date()
+          User.findOneAndUpdate({ email: email }, {QRCODE: ID.concat(d)})
+        }else{
+          console.log('err');
+        }
+})
 // exporting module for app.js
 module.exports = { router, profile }
