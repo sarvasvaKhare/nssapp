@@ -1,0 +1,46 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "### BACKEND README - run node server/index.js or npm start to run server (do not forget to install dependencies first by doing npm i)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "env-cmd config/dev.env nodemon server/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "12.18.3"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-formidable": "^1.2.0",
+    "express-jwt": "^5.3.1",
+    "express-session": "^1.17.1",
+    "googleapis": "^59.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.5.4",
+    "mongoose": "^5.9.4",
+    "mongoose-findorcreate": "^3.0.0",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^6.0.1",
+    "query-string": "^6.12.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "env-cmd": "^8.0.2",
+    "eslint": "^7.6.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "nodemon": "^2.0.4"
+  }
+}
