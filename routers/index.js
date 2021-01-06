@@ -114,7 +114,7 @@ router.post('/events', (req, res) => {
     Dailyevent: req.body.event
   })
 })
-router.post('/refreshqr', (req,res)=>{
+router.post('/refreshqr', urlencodedParser, (req,res)=>{
   const email = req.body.email;
   const user = User.findOne({ email: email })
         if (user) {
