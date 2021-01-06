@@ -116,7 +116,7 @@ router.post('/events', (req, res) => {
 })
 router.post('/refreshqr', (req,res)=>{
   const email = req.body.email;
-  const user = await User.findOne({ email: email })
+  const user = User.findOne({ email: email })
         if (user) {
           const d = new Date()
           User.findOneAndUpdate({ email: email }, {QRCODE: ID.concat(d)})
