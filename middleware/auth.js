@@ -18,7 +18,7 @@ const isLoggedIn = async(req, res, next) => {
         next()
 
     }catch(e){
-        res.status(401).json({"error":"Not Authenticated"})
+        res.status(403).json({"error":"Not Authenticated"})
     }
 }
 
