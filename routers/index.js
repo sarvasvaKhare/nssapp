@@ -145,7 +145,7 @@ router.post('/form',authentication,jsonparser,(req,res)=>{
     alternateemail:req.body.alternateemail,
     preference: {
         first:req.body.first,
-        second:req.bosy.second,
+        second:req.body.second,
         third:req.body.third
     }
   })
