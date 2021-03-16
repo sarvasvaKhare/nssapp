@@ -137,7 +137,7 @@ router.post('/refreshqr', urlencodedParser, (req,res)=>{
 router.post('/form',authentication,jsonparser,(req,res)=>{
   const nrecruit= new Recruit({
     email: req.user.email,
-    name: req.body.name,
+    name: req.user.name,
     ID: req.body.ID,
     Branch: req.body.branch,
     PhoneNo:req.body.phoneNo,
