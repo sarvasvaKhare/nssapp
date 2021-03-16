@@ -160,8 +160,8 @@ router.post('/form',authentication,jsonparser,(req,res)=>{
     })
   })
 })
-router.get('/form',authentication,(req,res)=>{
-    const list=Recruit.find({"preference.first":req.user.dept})
+router.get('/form',authentication, async (req,res)=>{
+    const list= await Recruit.find({"preference.first":req.user.dept})
     res.status(200).send(list)
 })
 
