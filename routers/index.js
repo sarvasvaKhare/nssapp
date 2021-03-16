@@ -28,6 +28,8 @@ router.post('/login', urlencodedParser, async (req, res) => {
       const { email, name, picture } = ticket.getPayload()
       const ID = email.slice(0, 9)
       const check = email.slice(9)
+      var mem=true;
+      var dep=NULL;
       var token = ''
       if (true) {
         const user = await User.findOne({ email: email })
@@ -36,6 +38,8 @@ router.post('/login', urlencodedParser, async (req, res) => {
           const d = new Date()
           const tperson = await User.findOne({ email: email }, 'dept designation').exec()
           if(tperson.dept){
+            dep=tperson.dept
+            mem=false;
           const eperson = await User.findOneAndUpdate({ email: email }, { name: name, PHOTO: picture, QRCODE: ID.concat(d), ACCESSLEVEL: tperson.dept.concat(tperson.designation) })
           }
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
@@ -52,15 +56,14 @@ router.post('/login', urlencodedParser, async (req, res) => {
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
         }
 
-        res.status(200).json({ token })
-      } else {
-        res.status(500).send()
+        res.status(200).json({ "token":token,"NSS":mem,"dept":dep})
       }
     } else {
       throw new Error()
     }
   } catch (e) {
     console.log(e)
+    res.status(500).send({"err":"error in logging"})
   }
 })
 
