@@ -161,10 +161,8 @@ router.post('/form',authentication,jsonparser,(req,res)=>{
   })
 })
 router.get('/form',authentication,(req,res)=>{
-  if(req.user.ACCESSLEVEL.includes("HR")){
     const list=Recruit.find({"preference.first":req.user.dept})
     res.status(200).send(list)
-  }
 })
 
 router.get('/reject',authentication,jsonparser,(req,res)=>{
