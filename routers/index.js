@@ -28,7 +28,7 @@ router.post('/login', urlencodedParser, async (req, res) => {
       const { email, name, picture } = ticket.getPayload()
       const ID = email.slice(0, 9)
       const check = email.slice(9)
-      var mem=true;
+      var mem=false;
       var dep=null;
       var token = ''
       if (true) {
@@ -39,7 +39,7 @@ router.post('/login', urlencodedParser, async (req, res) => {
           const tperson = await User.findOne({ email: email }, 'dept designation').exec()
           if(tperson.dept){
             dep=tperson.dept
-            mem=false;
+            mem=true;
           const eperson = await User.findOneAndUpdate({ email: email }, { name: name, PHOTO: picture, QRCODE: ID.concat(d), ACCESSLEVEL: tperson.dept.concat(tperson.designation) })
           }
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
