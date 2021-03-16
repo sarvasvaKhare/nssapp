@@ -35,7 +35,9 @@ router.post('/login', urlencodedParser, async (req, res) => {
         if (user) {
           const d = new Date()
           const tperson = await User.findOne({ email: email }, 'dept designation').exec()
+          if(tperson.dept){
           const eperson = await User.findOneAndUpdate({ email: email }, { name: name, PHOTO: picture, QRCODE: ID.concat(d), ACCESSLEVEL: tperson.dept.concat(tperson.designation) })
+          }
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
         } else {
           const d = new Date()
