@@ -29,7 +29,7 @@ router.post('/login', urlencodedParser, async (req, res) => {
       const ID = email.slice(0, 9)
       const check = email.slice(9)
       var mem=true;
-      var dep=NULL;
+      var dep=null;
       var token = ''
       if (true) {
         const user = await User.findOne({ email: email })
