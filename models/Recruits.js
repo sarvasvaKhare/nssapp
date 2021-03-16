@@ -17,3 +17,4 @@ const recruitSchema = new mongoose.Schema({
 });
 
 const Recruit = mongoose.model('recruit', recruitSchema);
+module.exports = Recruit
