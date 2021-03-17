@@ -4,6 +4,15 @@ const router = new express.Router()
 const bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
 var jsonparser= bodyParser.json()
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'youremail@gmail.com',
+    pass: 'yourpassword'
+  }
+});
 // authentication setup
 
 const jwt = require('jsonwebtoken')
@@ -13,6 +22,7 @@ const authentication = require('./../middleware/auth')
 const User = require('../models/user')
 const Event = require('../models/events')
 const Recruit = require('../models/Recruits')
+const Hr = require('../models/Hr')
 var profile = ''
 // index route
 router.get('', (req, res) => {
@@ -149,6 +159,19 @@ router.post('/form',authentication,jsonparser,(req,res)=>{
         third:req.body.third
     }
   })
+  var mailOptions = {
+    from: 'youremail@gmail.com',
+    to: req.user.email,
+    subject: 'Your recruitment form was submitted',
+    text: 'That was easy!'
+  }
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
   nrecruit.save().then(()=>{
     res.status(200).send({
       "success": true
@@ -166,11 +189,25 @@ router.get('/form',authentication, async (req,res)=>{
 })
 
 router.get('/reject',authentication,jsonparser,(req,res)=>{
-  if(req.user.ACCESSLEVEL.includes("HR")){
+const HR =Hr.findOne({email:req.user.email})
+  if(HR.length){
     const doc=Recruit.findOne({email:req.body.email})
     doc.preference.first=doc.preference.second;
     doc.preference.second=doc.preference.third;
     doc.preference.third=NULL;
+    var mailOptions = {
+      from: 'youremail@gmail.com',
+      to: req.user.email,
+      subject: 'Your recruitment form was submitted',
+      text: 'That was easy!'
+    }
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
     doc.save().then(()=>{
       res.status(200).send({"msg":"rejected"})
     }).catch((err)=>{
@@ -181,14 +218,32 @@ router.get('/reject',authentication,jsonparser,(req,res)=>{
   }
 })
 router.get('/accept',authentication,jsonparser,(req,res)=>{
-  if(req.user.ACCESSLEVEL.includes("HR")){
+  const HR =Hr.findOne({email:req.user.email})
+  if(HR.length){
     const doc=Recruit.findOne({email:req.body.email})
     doc.preference.second=NULL;
     doc.preference.third=NULL;
-    doc.save().then(()=>{
-      res.status(200).send({"msg":"rejected"})
+    doc.save()
+    const user = await User.findOne({ email: email })
+    user.dept=req.user.dept
+    user.designation="Volunteer"
+    var mailOptions = {
+      from: 'youremail@gmail.com',
+      to: req.user.email,
+      subject: 'Your recruitment form was submitted',
+      text: 'That was easy!'
+    }
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    user.save().then(()=>{
+      res.status(200).send({"msg":"accepted"})
     }).catch((err)=>{
-      res.status(400).send({"msg":"error in rejecting"})
+      res.status(400).send({"msg":"error in accepting"})
     })
   }else{
     res.status(403).send({"msg":"unauthorized"})
@@ -198,6 +253,29 @@ router.get('meet',authentication,(req,res)=>{
   const link = `http://meet.google.com/${req.user.name.slice(0,3)}`
   res.status(200).send({
     "link": link
+  })
+  var mailOptions = {
+    from: 'youremail@gmail.com',
+    to: req.user.email,
+    subject: 'Your recruitment form was submitted',
+    text: 'That was easy!'
+  }
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+})
+app.post('/access',authentication,(req,res)=>{
+  const newHr = new Hr({
+    email: req.body.email
+  })
+  newHr.save().then(()=>{
+    res.status(200).send({"success":true})
+  }).catch(()=>{
+    res.status(400).send({"msg":"err in giving access"})
   })
 })
 
