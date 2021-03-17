@@ -6,7 +6,7 @@ const recruitSchema = new mongoose.Schema({
     ID: String,
     Branch: String,
     PhoneNo:String,
-    WhatsappNO:String,
+    WhatsappNo:String,
     alternateemail:String,
     preference: {
         first:String,
