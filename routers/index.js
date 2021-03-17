@@ -151,7 +151,7 @@ router.post('/form',authentication,jsonparser,(req,res)=>{
   })
   nrecruit.save().then(()=>{
     res.status(200).send({
-      "sucesss": true
+      "success": true
     })
   }).catch((err)=>{
     console.log(err)
