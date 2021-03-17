@@ -140,8 +140,8 @@ router.post('/form',authentication,jsonparser,(req,res)=>{
     name: req.user.name,
     ID: req.body.ID,
     Branch: req.body.branch,
-    PhoneNo:req.body.phoneNo,
-    WhatsappNO:req.body.WhatsappNO,
+    PhoneNo:req.body.PhoneNo,
+    WhatsappNo:req.body.WhatsappNo,
     alternateemail:req.body.alternateemail,
     preference: {
         first:req.body.first,
@@ -151,12 +151,12 @@ router.post('/form',authentication,jsonparser,(req,res)=>{
   })
   nrecruit.save().then(()=>{
     res.status(200).send({
-      "msg":"data saved"
+      "sucesss": true
     })
   }).catch((err)=>{
     console.log(err)
     res.status(400).send({
-      "msg":"error in saving data"
+      "err":"form already exists"
     })
   })
 })
