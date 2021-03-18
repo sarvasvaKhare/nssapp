@@ -168,7 +168,8 @@ router.post('/form',authentication,urlencodedParser,(req,res)=>{
         first:req.body.first,
         second:req.body.second,
         third:req.body.third
-    }
+    },
+    PHOTO:req.user.PHOTO
   })
   // var mailOptions = {
   //   from: 'youremail@gmail.com',
