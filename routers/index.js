@@ -65,8 +65,12 @@ router.post('/login', urlencodedParser, async (req, res) => {
           await nperson.save()
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
         }
-
-        res.status(200).json({ "token":token,"NSS":mem,"dept":dep})
+        const HR = await Hr.find({email:email})
+        var access=false
+        if(HR.length){
+          access=true
+        }
+        res.status(200).json({ "token":token,"NSS":mem,"dept":dep,"access":access})
       }
     } else {
       throw new Error()
@@ -183,7 +187,7 @@ router.post('/form',authentication,urlencodedParser,(req,res)=>{
   })
 })
 router.get('/form',authentication, async (req,res)=>{
-    const list= await Recruit.find({"preference.first":req.user.dept})
+    const list= await Recruit.find({"preference.first":req.user.dept,"preference.second":{$ne:"accepted"}})
     res.status(200).send(list)
 })
 
