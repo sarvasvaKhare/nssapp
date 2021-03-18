@@ -145,6 +145,7 @@ router.post('/refreshqr', urlencodedParser, (req,res)=>{
         }
 })
 router.post('/form',authentication,jsonparser,(req,res)=>{
+  console.log(req.body)
   const nrecruit= new Recruit({
     email: req.user.email,
     name: req.user.name,
@@ -159,19 +160,19 @@ router.post('/form',authentication,jsonparser,(req,res)=>{
         third:req.body.third
     }
   })
-  var mailOptions = {
-    from: 'youremail@gmail.com',
-    to: req.user.email,
-    subject: 'Your recruitment form was submitted',
-    text: 'That was easy!'
-  }
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
+  // var mailOptions = {
+  //   from: 'youremail@gmail.com',
+  //   to: req.user.email,
+  //   subject: 'Your recruitment form was submitted',
+  //   text: 'That was easy!'
+  // }
+  // transporter.sendMail(mailOptions, function(error, info){
+  //   if (error) {
+  //     console.log(error);
+  //   } else {
+  //     console.log('Email sent: ' + info.response);
+  //   }
+  // });
   nrecruit.save().then(()=>{
     res.status(200).send({
       "success": true
@@ -195,21 +196,21 @@ const HR =Hr.findOne({email:req.user.email})
     doc.preference.first=doc.preference.second;
     doc.preference.second=doc.preference.third;
     doc.preference.third=NULL;
-    var mailOptions = {
-      from: 'youremail@gmail.com',
-      to: req.user.email,
-      subject: 'Your recruitment form was submitted',
-      text: 'That was easy!'
-    }
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
+    // var mailOptions = {
+    //   from: 'youremail@gmail.com',
+    //   to: req.user.email,
+    //   subject: 'Your recruitment form was submitted',
+    //   text: 'That was easy!'
+    // }
+    // transporter.sendMail(mailOptions, function(error, info){
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log('Email sent: ' + info.response);
+    //   }
+    // });
     doc.save().then(()=>{
-      res.status(200).send({"msg":"rejected"})
+      res.status(200).send({"success":true})
     }).catch((err)=>{
       res.status(400).send({"msg":"error in rejecting"})
     })
@@ -224,24 +225,21 @@ router.get('/accept',authentication,jsonparser,(req,res)=>{
     doc.preference.second=NULL;
     doc.preference.third=NULL;
     doc.save()
-    const user = await User.findOne({ email: email })
-    user.dept=req.user.dept
-    user.designation="Volunteer"
-    var mailOptions = {
-      from: 'youremail@gmail.com',
-      to: req.user.email,
-      subject: 'Your recruitment form was submitted',
-      text: 'That was easy!'
-    }
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
+    // var mailOptions = {
+    //   from: 'youremail@gmail.com',
+    //   to: req.user.email,
+    //   subject: 'Your recruitment form was submitted',
+    //   text: 'That was easy!'
+    // }
+    // transporter.sendMail(mailOptions, function(error, info){
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log('Email sent: ' + info.response);
+    //   }
+    // });
     user.save().then(()=>{
-      res.status(200).send({"msg":"accepted"})
+      res.status(200).send({"success":true})
     }).catch((err)=>{
       res.status(400).send({"msg":"error in accepting"})
     })
@@ -254,20 +252,20 @@ router.get('meet',authentication,(req,res)=>{
   res.status(200).send({
     "link": link
   })
-  var mailOptions = {
-    from: 'youremail@gmail.com',
-    to: req.user.email,
-    subject: 'Your recruitment form was submitted',
-    text: 'That was easy!'
-  }
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
-})
+//   var mailOptions = {
+//     from: 'youremail@gmail.com',
+//     to: req.user.email,
+//     subject: 'Your recruitment form was submitted',
+//     text: 'That was easy!'
+//   }
+//   transporter.sendMail(mailOptions, function(error, info){
+//     if (error) {
+//       console.log(error);
+//     } else {
+//       console.log('Email sent: ' + info.response);
+//     }
+//   });
+// })
 app.post('/access',authentication,(req,res)=>{
   const newHr = new Hr({
     email: req.body.email
