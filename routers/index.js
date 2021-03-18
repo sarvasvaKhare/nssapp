@@ -266,7 +266,7 @@ router.get('meet',authentication,(req,res)=>{
   //   }
   // });
 })
-app.post('/access',authentication,(req,res)=>{
+router.post('/access',authentication,(req,res)=>{
   const newHr = new Hr({
     email: req.body.email
   })
