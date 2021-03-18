@@ -110,27 +110,10 @@ router.get('/contacts', (req, res) => {
     }
   })
 })
-router.get('/events', (req, res) => { 
-  var result = [];
-   Event.find({ Dailyevent: true }, (err, result1) => 
-   { if (err) 
-    { console.log(err) }
-     else 
-     { 
-       for(let i=0;i<result1.length;i++){
-         result.push(result1[i])
-       }
-       } })
-     Event.find({ Dailyevent: false }, (err, result2) => 
-     { if (err) 
-      { console.log(err) } 
-      else 
-      { for(let i=0;i<result2.length;i++){
-        result.push(result2[i])
-      }
-        res.json(result);
-      } 
-    }) 
+router.get('/events', async (req, res) => { 
+   const result1= await Event.find({ Dailyevent: true })
+   const result2= await Event.find({ Dailyevent: false }) 
+   res.status(200).send({"dailyevent":result1,"mainevent":result2})
   })
 router.post('/events', (req, res) => {
   const nevent = new Event({
@@ -240,7 +223,7 @@ router.get('/accept',authentication,jsonparser, async (req,res)=>{
   if(HR.length){
     const doc= await Recruit.findOne({email:req.body.email})
     console.log(doc)
-    doc.preference.second=null;
+    doc.preference.second="accepted";
     doc.preference.third=null;
     // var mailOptions = {
     //   from: 'youremail@gmail.com',
