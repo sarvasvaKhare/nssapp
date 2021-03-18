@@ -125,8 +125,8 @@ router.get('/events', (req, res) => {
      { if (err) 
       { console.log(err) } 
       else 
-      { for(let i=0;i<result1.length;i++){
-        result.push(result1[i])
+      { for(let i=0;i<result2.length;i++){
+        result.push(result2[i])
       }
         res.json(result);
       } 
