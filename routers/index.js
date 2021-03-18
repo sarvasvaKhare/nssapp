@@ -116,14 +116,18 @@ router.get('/events', (req, res) => {
    { if (err) 
     { console.log(err) }
      else 
-     { console.log(result1)
-       result.push(result1) } })
+     { 
+       for(let i=0;i<result1.length;i++){
+         result.push(result1[i])
+       }
+       } })
      Event.find({ Dailyevent: false }, (err, result2) => 
      { if (err) 
       { console.log(err) } 
       else 
-      { result.push(result2) 
-        console.log(result)
+      { for(let i=0;i<result1.length;i++){
+        result.push(result1[i])
+      }
         res.json(result);
       } 
     }) 
@@ -200,13 +204,14 @@ router.get('/form',authentication, async (req,res)=>{
     res.status(200).send(list)
 })
 
-router.get('/reject',authentication,jsonparser,(req,res)=>{
-const HR =Hr.findOne({email:req.user.email})
+router.get('/reject',authentication,jsonparser,async (req,res)=>{
+const HR = await Hr.find({email:req.user.email})
+  console.log(HR)
   if(HR.length){
-    const doc=Recruit.findOne({email:req.body.email})
+    const doc= await Recruit.findOne({email:req.body.email})
     doc.preference.first=doc.preference.second;
     doc.preference.second=doc.preference.third;
-    doc.preference.third=NULL;
+    doc.preference.third=null;
     // var mailOptions = {
     //   from: 'youremail@gmail.com',
     //   to: req.user.email,
@@ -226,16 +231,17 @@ const HR =Hr.findOne({email:req.user.email})
       res.status(400).send({"msg":"error in rejecting"})
     })
   }else{
-    res.status(403).send({"msg":"unauthorized"})
+    res.status(403).send({"msg":"unauthori"})
   }
 })
-router.get('/accept',authentication,jsonparser,(req,res)=>{
-  const HR =Hr.findOne({email:req.user.email})
+router.get('/accept',authentication,jsonparser, async (req,res)=>{
+  const HR = await Hr.find({email:req.user.email})
+  console.log(HR)
   if(HR.length){
-    const doc=Recruit.findOne({email:req.body.email})
-    doc.preference.second=NULL;
-    doc.preference.third=NULL;
-    doc.save()
+    const doc= await Recruit.findOne({email:req.body.email})
+    console.log(doc)
+    doc.preference.second=null;
+    doc.preference.third=null;
     // var mailOptions = {
     //   from: 'youremail@gmail.com',
     //   to: req.user.email,
@@ -249,13 +255,13 @@ router.get('/accept',authentication,jsonparser,(req,res)=>{
     //     console.log('Email sent: ' + info.response);
     //   }
     // });
-    user.save().then(()=>{
+    doc.save().then(()=>{
       res.status(200).send({"success":true})
     }).catch((err)=>{
       res.status(400).send({"msg":"error in accepting"})
     })
   }else{
-    res.status(403).send({"msg":"unauthorized"})
+    res.status(403).send({"msg":"unauthori"})
   }
 })
 router.get('meet',authentication,(req,res)=>{
@@ -277,7 +283,7 @@ router.get('meet',authentication,(req,res)=>{
   //   }
   // });
 })
-router.post('/access',authentication,(req,res)=>{
+router.post('/access',authentication,jsonparser,(req,res)=>{
   const newHr = new Hr({
     email: req.body.email
   })
