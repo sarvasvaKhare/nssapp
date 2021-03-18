@@ -98,6 +98,14 @@ router.get('/contacts', (req, res) => {
     if (err) {
       console.log(err)
     } else {
+      for(let i=0;i<results.length;i++){
+        if(results[i].PHOTO){
+        }else{
+          results[i].PHOTO=null;
+          results[i].QRCODE=null;
+          results[i].ACCESSLEVEL=null;
+        }
+      }
       res.json(results)
     }
   })
@@ -108,7 +116,8 @@ router.get('/events', (req, res) => {
    { if (err) 
     { console.log(err) }
      else 
-     { result.push(result1) } })
+     { console.log(result1)
+       result.push(result1) } })
      Event.find({ Dailyevent: false }, (err, result2) => 
      { if (err) 
       { console.log(err) } 
