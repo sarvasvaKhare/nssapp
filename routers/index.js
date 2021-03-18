@@ -94,7 +94,7 @@ router.get('/profile', authentication, (req, res) => {
 })
 router.get('/contacts', (req, res) => {
   // res.status(200).json(result)
-  User.find({ designation: { $exists: true } }, 'name designation dept m_number email', (err, results) => {
+  User.find({ designation: { $exists: true } },(err, results) => {
     if (err) {
       console.log(err)
     } else {
@@ -114,7 +114,8 @@ router.get('/events', (req, res) => {
       { console.log(err) } 
       else 
       { result.push(result2) 
-        res.json(result); 
+        console.log(result)
+        res.json(result);
       } 
     }) 
   })
