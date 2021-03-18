@@ -252,20 +252,20 @@ router.get('meet',authentication,(req,res)=>{
   res.status(200).send({
     "link": link
   })
-//   var mailOptions = {
-//     from: 'youremail@gmail.com',
-//     to: req.user.email,
-//     subject: 'Your recruitment form was submitted',
-//     text: 'That was easy!'
-//   }
-//   transporter.sendMail(mailOptions, function(error, info){
-//     if (error) {
-//       console.log(error);
-//     } else {
-//       console.log('Email sent: ' + info.response);
-//     }
-//   });
-// })
+  // var mailOptions = {
+  //   from: 'youremail@gmail.com',
+  //   to: req.user.email,
+  //   subject: 'Your recruitment form was submitted',
+  //   text: 'That was easy!'
+  // }
+  // transporter.sendMail(mailOptions, function(error, info){
+  //   if (error) {
+  //     console.log(error);
+  //   } else {
+  //     console.log('Email sent: ' + info.response);
+  //   }
+  // });
+})
 app.post('/access',authentication,(req,res)=>{
   const newHr = new Hr({
     email: req.body.email
