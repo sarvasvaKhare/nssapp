@@ -297,7 +297,7 @@ router.post('/accept',authentication,jsonparser, async (req,res)=>{
     res.status(403).send({"msg":"unauthori"})
   }
 })
-router.post('meet',authentication,(req,res)=>{
+router.post('meet',authentication,jsonparser,(req,res)=>{
   const Message = {
     "link": req.body.link,
     "time": req.body.time,
@@ -330,7 +330,7 @@ router.post('meet',authentication,(req,res)=>{
   //   }
   // });
 })
-router.get('/recruited',authentication, async (req,res)=>{
+router.get('/recruited',authentication,jsonparser, async (req,res)=>{
   const list= await Recruit.find({"preference.first":req.user.dept,"preference.second":"accepted"})
   res.status(200).send(list)
 })
@@ -344,7 +344,7 @@ router.post('/access',authentication,jsonparser,(req,res)=>{
     res.status(400).send({"msg":"err in giving access"})
   })
 })
-router.post("/updatefm",authentication, async (req,res)=>{
+router.post("/updatefm",authentication,jsonparser, async (req,res)=>{
   const user = await User.findOne({ email: req.user.email })
   user.FMTOKEN=req.body.fmToken
   user.save().then(()=>{
@@ -354,12 +354,12 @@ router.post("/updatefm",authentication, async (req,res)=>{
   res.status(400).send({"msg":"error in updating"})
   })
 })
-router.get("/department",authentication, async (req,res)=>{
+router.get("/department",authentication,jsonparser, async (req,res)=>{
   const dept = req.body.dept
   const data = Department.findOne({"dept":dept})
   res,status(200).send(data)
 })
-router.post("/department",authentication, async (req,res)=>{
+router.post("/department",authentication,jsonparser, async (req,res)=>{
   const newdepartment = new department({
     dept: req.body.dept,
     data: req.body.data
