@@ -5,6 +5,16 @@ const bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
 var jsonparser= bodyParser.json()
 var nodemailer = require('nodemailer');
+//firebase admin sdk
+var admin = require("firebase-admin");
+
+var serviceAccount = require("./../nss-282015-firebase-adminsdk-xspz0-1b20ee59df.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://nss-282015.firebaseio.com"
+});
+
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -23,6 +33,7 @@ const User = require('../models/user')
 const Event = require('../models/events')
 const Recruit = require('../models/Recruits')
 const Hr = require('../models/Hr')
+const department = require('../models/Department')
 var profile = ''
 // index route
 router.get('', (req, res) => {
@@ -47,10 +58,13 @@ router.post('/login', urlencodedParser, async (req, res) => {
         if (user) {
           const d = new Date()
           const tperson = await User.findOne({ email: email }, 'dept designation').exec()
+          tperson.PHOTO=picture
+          tperson.QRCODE=ID.concat(d)
+          tperson.FMTOKEN=req.body.fmToken
           if(tperson.dept){
             dep=tperson.dept
             mem=true;
-          const eperson = await User.findOneAndUpdate({ email: email }, { name: name, PHOTO: picture, QRCODE: ID.concat(d), ACCESSLEVEL: tperson.dept.concat(tperson.designation) })
+          tperson.ACCESSLEVEL=tperson.dept.concat(tperson.designation)
           }
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
         } else {
@@ -60,7 +74,8 @@ router.post('/login', urlencodedParser, async (req, res) => {
             name: name,
             PHOTO: picture,
             QRCODE: ID.concat(d),
-            ACCESSLEVEL: '.'
+            ACCESSLEVEL: '.',
+            FMTOKEN: req.body.fmToken
           })
           await nperson.save()
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
@@ -199,6 +214,22 @@ const HR = await Hr.find({email:req.user.email})
     doc.preference.first=doc.preference.second;
     doc.preference.second=doc.preference.third;
     doc.preference.third=null;
+    const reciever = User.findOne({email:req.body.email})
+    const  registrationToken = reciever.FMTOKEN
+    const Message={
+      "title":"Selected",
+      "body":doc.preference.first,
+      "next preference": doc.preference.first
+    }
+      admin.messaging().sendToDevice(registrationToken, Message, options)
+      .then( response => {
+
+       console.log("Notification sent successfully")
+       
+      })
+      .catch( error => {
+          console.log(error);
+      });
     // var mailOptions = {
     //   from: 'youremail@gmail.com',
     //   to: req.user.email,
@@ -229,6 +260,21 @@ router.post('/accept',authentication,jsonparser, async (req,res)=>{
     console.log(doc)
     doc.preference.second="accepted";
     doc.preference.third=null;
+    const reciever = User.findOne({email:req.body.email})
+    const  registrationToken = reciever.FMTOKEN
+    const Message={
+      "title":"Selected",
+      "body":doc.preference.first
+    }
+      admin.messaging().sendToDevice(registrationToken, Message, options)
+      .then( response => {
+
+       console.log("Notification sent successfully")
+       
+      })
+      .catch( error => {
+          console.log(error);
+      });
     // var mailOptions = {
     //   from: 'youremail@gmail.com',
     //   to: req.user.email,
@@ -251,11 +297,25 @@ router.post('/accept',authentication,jsonparser, async (req,res)=>{
     res.status(403).send({"msg":"unauthori"})
   }
 })
-router.get('meet',authentication,(req,res)=>{
-  const link = `http://meet.google.com/${req.user.name.slice(0,3)}`
-  res.status(200).send({
-    "link": link
-  })
+router.post('meet',authentication,(req,res)=>{
+  const Message = {
+    "link": req.body.link,
+    "time": req.body.time,
+    "title": "meet link"
+  }
+  const reciever = User.findOne({email:req.body.email})
+  const  registrationToken = reciever.FMTOKEN
+    
+      admin.messaging().sendToDevice(registrationToken, Message, options)
+      .then( response => {
+
+       console.log("Notification sent successfully")
+       
+      })
+      .catch( error => {
+          console.log(error);
+      });
+  res.status(200).send(Message)
   // var mailOptions = {
   //   from: 'youremail@gmail.com',
   //   to: req.user.email,
@@ -284,6 +344,31 @@ router.post('/access',authentication,jsonparser,(req,res)=>{
     res.status(400).send({"msg":"err in giving access"})
   })
 })
-
+router.post("/updatefm",authentication, async (req,res)=>{
+  const user = await User.findOne({ email: req.user.email })
+  user.FMTOKEN=req.body.fmToken
+  user.save().then(()=>{
+    res.status(200).send({"success":true})
+  }).catch((err)=>{
+  console.log(err)
+  res.status(400).send({"msg":"error in updating"})
+  })
+})
+router.get("/department",authentication, async (req,res)=>{
+  const dept = req.body.dept
+  const data = Department.findOne({"dept":dept})
+  res,status(200).send(data)
+})
+router.post("/department",authentication, async (req,res)=>{
+  const newdepartment = new department({
+    dept: req.body.dept,
+    data: req.body.data
+  })
+  newdepartment.save().then(()=>{
+    res.satus(200).send({"success":true})
+  }).catch((err)=>{
+    res.status(400).send({"msg":"dept data already exists"})
+  })
+})
 // exporting module for app.js
 module.exports = { router, profile }
