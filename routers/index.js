@@ -256,6 +256,7 @@ router.post('/accept',authentication,jsonparser, async (req,res)=>{
   const HR = await Hr.find({email:req.user.email})
   console.log(HR)
   if(HR.length){
+    console.log(req.body.email)
     const doc= await Recruit.findOne({email:req.body.email})
     console.log(doc)
     doc.preference.second="accepted";
