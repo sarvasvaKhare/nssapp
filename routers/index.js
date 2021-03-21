@@ -57,14 +57,16 @@ router.post('/login', urlencodedParser, async (req, res) => {
         if (user) {
           const d = new Date()
           const tperson = await User.findOne({ email: email }, 'dept designation').exec()
-          tperson.PHOTO=picture
-          tperson.QRCODE=ID.concat(d)
-          tperson.fcmToken=req.body.fcmToken
+          user.PHOTO=picture
+          user.QRCODE=ID.concat(d)
+          user.fcmToken=req.body.fcmToken
           if(tperson.dept){
             dep=tperson.dept
             mem=true;
           tperson.ACCESSLEVEL=tperson.dept.concat(tperson.designation)
+          tperson.save()
           }
+          user.save()
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
         } else {
           const d = new Date()
