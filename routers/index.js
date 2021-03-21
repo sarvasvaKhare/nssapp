@@ -270,6 +270,10 @@ router.get('meet',authentication,(req,res)=>{
   //   }
   // });
 })
+router.get('/recruited',authentication, async (req,res)=>{
+  const list= await Recruit.find({"preference.first":req.user.dept,"preference.second":"accepted"})
+  res.status(200).send(list)
+})
 router.post('/access',authentication,jsonparser,(req,res)=>{
   const newHr = new Hr({
     email: req.body.email
