@@ -205,7 +205,7 @@ router.get('/form',authentication, async (req,res)=>{
     res.status(200).send(list)
 })
 
-router.post('/reject',authentication,urlendcodedParser,async (req,res)=>{
+router.post('/reject',authentication,urlencodedParser,async (req,res)=>{
 const HR = await Hr.find({email:req.user.email})
   console.log(HR)
   if(HR.length){
