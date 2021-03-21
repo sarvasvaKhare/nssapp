@@ -252,7 +252,7 @@ const HR = await Hr.find({email:req.user.email})
     res.status(403).send({"msg":"unauthori"})
   }
 })
-router.post('/accept',authentication,jsonparser, async (req,res)=>{
+router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
   const HR = await Hr.find({email:req.user.email})
   console.log(HR)
   if(HR.length){
