@@ -356,7 +356,7 @@ router.post("/updatefm",authentication,urlencodedParser, async (req,res)=>{
 })
 router.get("/department",authentication,urlencodedParser, async (req,res)=>{
   const dept = req.body.dept
-  const data = Department.findOne({"dept":dept})
+  const data = department.findOne({"dept":dept})
   res,status(200).send(data)
 })
 router.post("/department",authentication,urlencodedParser, async (req,res)=>{
