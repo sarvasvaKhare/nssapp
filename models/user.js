@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     designation: String,
     ACCESSLEVEL: String,
     QRCODE: String,
-    fmToken:String
+    fcmToken:String
 });
 
 userSchema.methods.getPublicProfile = async function() {
