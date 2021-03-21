@@ -3,7 +3,6 @@ const express = require('express')
 const router = new express.Router()
 const bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
-var jsonparser= bodyParser.json()
 var nodemailer = require('nodemailer');
 //firebase admin sdk
 var admin = require("firebase-admin");
@@ -60,7 +59,7 @@ router.post('/login', urlencodedParser, async (req, res) => {
           const tperson = await User.findOne({ email: email }, 'dept designation').exec()
           tperson.PHOTO=picture
           tperson.QRCODE=ID.concat(d)
-          tperson.FMTOKEN=req.body.fmToken
+          tperson.fmToken=req.body.fmToken
           if(tperson.dept){
             dep=tperson.dept
             mem=true;
@@ -75,7 +74,7 @@ router.post('/login', urlencodedParser, async (req, res) => {
             PHOTO: picture,
             QRCODE: ID.concat(d),
             ACCESSLEVEL: '.',
-            FMTOKEN: req.body.fmToken
+            fmToken: req.body.fmToken
           })
           await nperson.save()
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
@@ -206,7 +205,7 @@ router.get('/form',authentication, async (req,res)=>{
     res.status(200).send(list)
 })
 
-router.post('/reject',authentication,jsonparser,async (req,res)=>{
+router.post('/reject',authentication,urlendcodedParser,async (req,res)=>{
 const HR = await Hr.find({email:req.user.email})
   console.log(HR)
   if(HR.length){
@@ -215,7 +214,7 @@ const HR = await Hr.find({email:req.user.email})
     doc.preference.second=doc.preference.third;
     doc.preference.third=null;
     const reciever = User.findOne({email:req.body.email})
-    const  registrationToken = reciever.FMTOKEN
+    const  registrationToken = reciever.fmToken
     const Message={
       "title":"Selected",
       "body":doc.preference.first,
@@ -262,7 +261,7 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     doc.preference.second="accepted";
     doc.preference.third=null;
     const reciever = User.findOne({email:req.body.email})
-    const  registrationToken = reciever.FMTOKEN
+    const  registrationToken = reciever.fmToken
     const Message={
       "title":"Selected",
       "body":doc.preference.first
@@ -298,14 +297,14 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     res.status(403).send({"msg":"unauthori"})
   }
 })
-router.post('meet',authentication,jsonparser,(req,res)=>{
+router.post('meet',authentication,urlendcodedParser,(req,res)=>{
   const Message = {
     "link": req.body.link,
     "time": req.body.time,
     "title": "meet link"
   }
   const reciever = User.findOne({email:req.body.email})
-  const  registrationToken = reciever.FMTOKEN
+  const  registrationToken = reciever.fmToken
     
       admin.messaging().sendToDevice(registrationToken, Message)
       .then( response => {
@@ -331,11 +330,11 @@ router.post('meet',authentication,jsonparser,(req,res)=>{
   //   }
   // });
 })
-router.get('/recruited',authentication,jsonparser, async (req,res)=>{
+router.get('/recruited',authentication,urlendcodedParser, async (req,res)=>{
   const list= await Recruit.find({"preference.first":req.user.dept,"preference.second":"accepted"})
   res.status(200).send(list)
 })
-router.post('/access',authentication,jsonparser,(req,res)=>{
+router.post('/access',authentication,urlendcodedParser,(req,res)=>{
   const newHr = new Hr({
     email: req.body.email
   })
@@ -345,9 +344,9 @@ router.post('/access',authentication,jsonparser,(req,res)=>{
     res.status(400).send({"msg":"err in giving access"})
   })
 })
-router.post("/updatefm",authentication,jsonparser, async (req,res)=>{
+router.post("/updatefm",authentication,urlendcodedParser, async (req,res)=>{
   const user = await User.findOne({ email: req.user.email })
-  user.FMTOKEN=req.body.fmToken
+  user.fmToken=req.body.fmToken
   user.save().then(()=>{
     res.status(200).send({"success":true})
   }).catch((err)=>{
@@ -355,12 +354,12 @@ router.post("/updatefm",authentication,jsonparser, async (req,res)=>{
   res.status(400).send({"msg":"error in updating"})
   })
 })
-router.get("/department",authentication,jsonparser, async (req,res)=>{
+router.get("/department",authentication,urlendcodedParser, async (req,res)=>{
   const dept = req.body.dept
   const data = Department.findOne({"dept":dept})
   res,status(200).send(data)
 })
-router.post("/department",authentication,jsonparser, async (req,res)=>{
+router.post("/department",authentication,urlendcodedParser, async (req,res)=>{
   const newdepartment = new department({
     dept: req.body.dept,
     data: req.body.data
