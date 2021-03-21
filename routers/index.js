@@ -365,8 +365,9 @@ router.post("/department",authentication,jsonparser, async (req,res)=>{
     data: req.body.data
   })
   newdepartment.save().then(()=>{
-    res.satus(200).send({"success":true})
+    res.status(200).send({"success":true})
   }).catch((err)=>{
+    console.log(err)
     res.status(400).send({"msg":"dept data already exists"})
   })
 })
