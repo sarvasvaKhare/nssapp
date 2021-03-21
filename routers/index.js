@@ -191,7 +191,7 @@ router.get('/form',authentication, async (req,res)=>{
     res.status(200).send(list)
 })
 
-router.get('/reject',authentication,jsonparser,async (req,res)=>{
+router.post('/reject',authentication,jsonparser,async (req,res)=>{
 const HR = await Hr.find({email:req.user.email})
   console.log(HR)
   if(HR.length){
@@ -221,7 +221,7 @@ const HR = await Hr.find({email:req.user.email})
     res.status(403).send({"msg":"unauthori"})
   }
 })
-router.get('/accept',authentication,jsonparser, async (req,res)=>{
+router.post('/accept',authentication,jsonparser, async (req,res)=>{
   const HR = await Hr.find({email:req.user.email})
   console.log(HR)
   if(HR.length){
