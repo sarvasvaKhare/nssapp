@@ -59,7 +59,7 @@ router.post('/login', urlencodedParser, async (req, res) => {
           const tperson = await User.findOne({ email: email }, 'dept designation').exec()
           tperson.PHOTO=picture
           tperson.QRCODE=ID.concat(d)
-          tperson.fmToken=req.body.fmToken
+          tperson.fcmToken=req.body.fcmToken
           if(tperson.dept){
             dep=tperson.dept
             mem=true;
@@ -74,7 +74,7 @@ router.post('/login', urlencodedParser, async (req, res) => {
             PHOTO: picture,
             QRCODE: ID.concat(d),
             ACCESSLEVEL: '.',
-            fmToken: req.body.fmToken
+            fcmToken: req.body.fcmToken
           })
           await nperson.save()
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
@@ -214,7 +214,7 @@ const HR = await Hr.find({email:req.user.email})
     doc.preference.second=doc.preference.third;
     doc.preference.third=null;
     const reciever = User.findOne({email:req.body.email})
-    const  registrationToken = reciever.fmToken
+    const  registrationToken = reciever.fcmToken
     const Message={
       "title":"Selected",
       "body":doc.preference.first,
@@ -261,7 +261,7 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     doc.preference.second="accepted";
     doc.preference.third=null;
     const reciever = User.findOne({email:req.body.email})
-    const  registrationToken = reciever.fmToken
+    const  registrationToken = reciever.fcmToken
     const Message={
       "title":"Selected",
       "body":doc.preference.first
@@ -304,7 +304,7 @@ router.post('meet',authentication,urlencodedParser,(req,res)=>{
     "title": "meet link"
   }
   const reciever = User.findOne({email:req.body.email})
-  const  registrationToken = reciever.fmToken
+  const  registrationToken = reciever.fcmToken
     
       admin.messaging().sendToDevice(registrationToken, Message)
       .then( response => {
@@ -344,9 +344,9 @@ router.post('/access',authentication,urlencodedParser,(req,res)=>{
     res.status(400).send({"msg":"err in giving access"})
   })
 })
-router.post("/updatefm",authentication,urlencodedParser, async (req,res)=>{
+router.post("/updatefcm",authentication,urlencodedParser, async (req,res)=>{
   const user = await User.findOne({ email: req.user.email })
-  user.fmToken=req.body.fmToken
+  user.fcmToken=req.body.fcmToken
   user.save().then(()=>{
     res.status(200).send({"success":true})
   }).catch((err)=>{
