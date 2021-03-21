@@ -221,7 +221,7 @@ const HR = await Hr.find({email:req.user.email})
       "body":doc.preference.first,
       "next preference": doc.preference.first
     }
-      admin.messaging().sendToDevice(registrationToken, Message, options)
+      admin.messaging().sendToDevice(registrationToken, Message)
       .then( response => {
 
        console.log("Notification sent successfully")
@@ -267,7 +267,7 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
       "title":"Selected",
       "body":doc.preference.first
     }
-      admin.messaging().sendToDevice(registrationToken, Message, options)
+      admin.messaging().sendToDevice(registrationToken, Message)
       .then( response => {
 
        console.log("Notification sent successfully")
@@ -307,7 +307,7 @@ router.post('meet',authentication,jsonparser,(req,res)=>{
   const reciever = User.findOne({email:req.body.email})
   const  registrationToken = reciever.FMTOKEN
     
-      admin.messaging().sendToDevice(registrationToken, Message, options)
+      admin.messaging().sendToDevice(registrationToken, Message)
       .then( response => {
 
        console.log("Notification sent successfully")
