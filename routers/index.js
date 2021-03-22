@@ -18,8 +18,8 @@ admin.initializeApp({
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'youremail@gmail.com',
-    pass: 'yourpassword'
+    user: 'nssbitstech@gmail.com',
+    pass: 'ssfwneitykaolyoo'
   }
 });
 // authentication setup
@@ -32,7 +32,8 @@ const User = require('../models/user')
 const Event = require('../models/events')
 const Recruit = require('../models/Recruits')
 const Hr = require('../models/Hr')
-const department = require('../models/Department')
+const department = require('../models/Department');
+const { gmail } = require('googleapis/build/src/apis/gmail');
 var profile = ''
 // index route
 router.get('', (req, res) => {
@@ -236,11 +237,28 @@ const HR = await Hr.find({email:req.user.email})
       .then( response => {
 
        console.log("Notification sent successfully")
-       
+       var mailOptions = {
+        from: 'nssbitstech@gmail.com',
+        to: req.body.email,
+        subject: 'Recruitment Update',
+        text: `You are now being considered for department ${doc.preference.first}`
+      }
+      transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+        doc.save().then(()=>{
+          res.status(200).send({"success":true})
+        }).catch((err)=>{
+          res.status(400).send({"msg":"error in rejecting"})
+        })
+      }
       })
       .catch( error => {
           console.log(error);
       });
+    })
     // var mailOptions = {
     //   from: 'youremail@gmail.com',
     //   to: req.user.email,
@@ -254,13 +272,8 @@ const HR = await Hr.find({email:req.user.email})
     //     console.log('Email sent: ' + info.response);
     //   }
     // });
-    doc.save().then(()=>{
-      res.status(200).send({"success":true})
-    }).catch((err)=>{
-      res.status(400).send({"msg":"error in rejecting"})
-    })
   }else{
-    res.status(403).send({"msg":"unauthori"})
+    res.status(403).send({"msg":"unauthorized"})
   }
 })
 router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
@@ -286,29 +299,29 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
       .then( response => {
 
        console.log("Notification sent successfully")
-       
+       doc.save().then(()=>{
+        var mailOptions = {
+          from: 'nssbitstech@gmail.com',
+          to: req.body.email,
+          subject: 'Recruitment Update',
+          text: `You have been selected into department ${doc.preference.first} as per your form`
+        }
+        transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+          res.status(200).send({"success":true})
+        }
+    }); 
+      }).catch((err)=>{
+        res.status(400).send({"msg":"error in accepting"})
+      })
       })
       .catch( error => {
           console.log(error);
       });
-    // var mailOptions = {
-    //   from: 'youremail@gmail.com',
-    //   to: req.user.email,
-    //   subject: 'Your recruitment form was submitted',
-    //   text: 'That was easy!'
-    // }
-    // transporter.sendMail(mailOptions, function(error, info){
-    //   if (error) {
-    //     console.log(error);
-    //   } else {
-    //     console.log('Email sent: ' + info.response);
-    //   }
-    // });
-    doc.save().then(()=>{
-      res.status(200).send({"success":true})
-    }).catch((err)=>{
-      res.status(400).send({"msg":"error in accepting"})
-    })
+    
   }else{
     res.status(403).send({"msg":"unauthori"})
   }
@@ -330,25 +343,26 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
       .then( response => {
 
        console.log("Notification sent successfully")
-       
+       var mailOptions = {
+        from: 'nssbitstech@gmail.com',
+        to: req.body.email,
+        subject: 'You have been called for interaction meet',
+        text: 'blah blah'
+      }
+      transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+      console.log(error);
+      } else {
+      console.log('Email sent: ' + info.response);
+      res.status(200).send({"success":true})
+      }
+  });  
       })
       .catch( error => {
           console.log(error);
       });
-  res.status(200).send(Message)
-  // var mailOptions = {
-  //   from: 'youremail@gmail.com',
-  //   to: req.user.email,
-  //   subject: 'Your recruitment form was submitted',
-  //   text: 'That was easy!'
-  // }
-  // transporter.sendMail(mailOptions, function(error, info){
-  //   if (error) {
-  //     console.log(error);
-  //   } else {
-  //     console.log('Email sent: ' + info.response);
-  //   }
-  // });
+
+  
 })
 router.get('/recruited',authentication,urlencodedParser, async (req,res)=>{
   const list= await Recruit.find({"preference.first":req.user.dept,"preference.second":"accepted"})
