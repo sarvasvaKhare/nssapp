@@ -135,7 +135,7 @@ router.get('/events', async (req, res) => {
    const result2= await Event.find({ Dailyevent: false }) 
    res.status(200).send({"dailyevent":result1,"mainevent":result2})
   })
-router.post('/events', (req, res) => {
+router.post('/events',urlencodedParser, (req, res) => {
   const nevent = new Event({
     Title: req.body.title,
     DateFrom: req.body.datefrom,
@@ -146,6 +146,9 @@ router.post('/events', (req, res) => {
       Description: req.body.description
     },
     Dailyevent: req.body.event
+  })
+  nevent.save().then(()=>{
+    res.status(200).send('hello')
   })
 })
 router.post('/refreshqr', urlencodedParser, (req,res)=>{
@@ -313,6 +316,7 @@ router.post('/meet',authentication,urlencodedParser,(req,res)=>{
     "type": "meet"
   }
   const reciever = User.findOne({email:req.body.email})
+  console.log(reciever.fcmToken)
   const  registrationToken = reciever.fcmToken
     
       admin.messaging().sendToDevice(registrationToken, Message)
