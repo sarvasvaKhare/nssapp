@@ -3,6 +3,7 @@ const scheduleLib = require("node-schedule");
 const firebaseAdmin = require("firebase-admin");
 const User = require("./models/user");
 const ScheduledNotification = require("./models/ScheduledNotification");
+const { MongooseDocument } = require("mongoose");
 const schedule = {};
 schedule.createSchedule = async function (data,token1,token2) 
 {    try {
@@ -14,10 +15,11 @@ schedule.createSchedule = async function (data,token1,token2)
                                  body: data.body
                                 },
     });   
-     await scheduledNotification.save();       
-     const timeToSent = data.time.split(":");    
-     const hours = timeToSent[0];    
-     const minutes = timeToSent[1];    
+     await scheduledNotification.save();
+     const times =moment(data.time).format('LT')
+     const timeToSent = times.split(":");  
+     var hours = timeToSent[0];
+     var minutes = timeToSent[1];    
      const scheduleId = scheduledNotification._id.toString();    
      const scheduleTimeout = `${minutes} ${hours} * * *`;  
      const tokens=[token1,token2]  
