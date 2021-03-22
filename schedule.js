@@ -46,8 +46,9 @@ if(hours>=5){
 }   
      const scheduleId = scheduledNotification._id.toString();    
      const scheduleTimeout = `${minutes} ${hours} * * *`;  
+     console.log(scheduleTimeout)
      const tokens=[token1,token2]  
-     scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () =>
+     const promise = scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () =>
     {   const message = {    
         data:{           
             title: data.title,       
@@ -55,9 +56,11 @@ if(hours>=5){
             link:data.link
         },
         tokens: tokens
-        };    
+        };
         return admin.messaging().sendMulticast(message);   
-    }); 
+    });
+    await Promise.all(promise);
+    console.log(promise)
 } catch (e)
  {throw e;}};
 module.exports = schedule;

@@ -336,7 +336,7 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
                      "body": `You have schduled meet right in 10 mins`,
                      "link": `https://api.whatsapp.com/send?phone=+91${req.user.m_number}`,
                   };
-        await schedule.createSchedule(payload,registrationToken,req.user.fcmToken);
+        schedule.createSchedule(payload,registrationToken,req.user.fcmToken);
       } catch (e) { 
         console.log(e)
         res.status(400).json({ "success": false});   
@@ -346,7 +346,9 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
         from: 'nssbitstech@gmail.com',
         to: req.body.email,
         subject: 'You have been called for interaction meet',
-        text: ''
+        text: `Congratulations ${reciever.email} you have advanced to the next round of recruitments.  Kindly join this meet link ${req.body.link} at ${req.body.time} for further proceedings or contact ${req.user.m_number} for any queries regarding change if timing
+        Warm regards 
+        NSS BITS pilani`
       }
       transporter.sendMail(mailOptions, function(error, info){
       if (error) {
