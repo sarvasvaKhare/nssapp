@@ -219,22 +219,24 @@ const HR = await Hr.find({email:req.user.email})
     doc.preference.first=doc.preference.second;
     doc.preference.second=doc.preference.third;
     doc.preference.third=null;
-    // const reciever = User.findOne({email:req.body.email})
-    // const  registrationToken = reciever.fcmToken
-    // const Message={
-    //   "title":"Selected",
-    //   "body":doc.preference.first,
-    //   "next preference": doc.preference.first
-    // }
-    //   admin.messaging().sendToDevice(registrationToken, Message)
-    //   .then( response => {
+    const reciever = User.findOne({email:req.body.email})
+    const  registrationToken = reciever.fcmToken
+    const Message={
+      data:{
+        "title":"Recruitment Update",
+        "body":`You are now being considered for department ${doc.preference.first}`,
+        "type": "info"
+      }
+    }
+      admin.messaging().sendToDevice(registrationToken, Message)
+      .then( response => {
 
-    //    console.log("Notification sent successfully")
+       console.log("Notification sent successfully")
        
-    //   })
-    //   .catch( error => {
-    //       console.log(error);
-    //   });
+      })
+      .catch( error => {
+          console.log(error);
+      });
     // var mailOptions = {
     //   from: 'youremail@gmail.com',
     //   to: req.user.email,
@@ -266,21 +268,22 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     console.log(doc)
     doc.preference.second="accepted";
     doc.preference.third=null;
-    // const reciever = User.findOne({email:req.body.email})
-    // const  registrationToken = reciever.fcmToken
-    // const Message={
-    //   "title":"Selected",
-    //   "body":doc.preference.first
-    // }
-    //   admin.messaging().sendToDevice(registrationToken, Message)
-    //   .then( response => {
+    const reciever = User.findOne({email:req.body.email})
+    const  registrationToken = reciever.fcmToken
+    const Message={
+      "title":"Selected",
+      "body":`You have been selected into department ${doc.preference.first} as per your form`,
+      "type": "info"
+    }
+      admin.messaging().sendToDevice(registrationToken, Message)
+      .then( response => {
 
-    //    console.log("Notification sent successfully")
+       console.log("Notification sent successfully")
        
-    //   })
-    //   .catch( error => {
-    //       console.log(error);
-    //   });
+      })
+      .catch( error => {
+          console.log(error);
+      });
     // var mailOptions = {
     //   from: 'youremail@gmail.com',
     //   to: req.user.email,
@@ -306,7 +309,8 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
 router.post('/meet',authentication,urlencodedParser,(req,res)=>{
   const Message = {
     "link": req.body.meet,
-    "title": "meet link"
+    "title": "meet link",
+    "type": "meet"
   }
   const reciever = User.findOne({email:req.body.email})
   const  registrationToken = reciever.fcmToken
