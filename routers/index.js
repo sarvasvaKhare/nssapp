@@ -318,7 +318,7 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
     data: {
     "meet": req.body.meet,
     "title": "Recruitment Interaction Invite",
-    "body": "You have been called interaction meet",
+    "body": "You have been called for interaction meet",
     "type": "meet"
     }
   }
