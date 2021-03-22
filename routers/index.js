@@ -133,7 +133,7 @@ router.get('/contacts', (req, res) => {
 })
 router.get('/events', async (req, res) => { 
    const result1= await Event.find({ Dailyevent: true })
-   const result2= await Event.find({ Dailyevent: false }) 
+   const result2= await Event.find({ Dailyevent: false })
    res.status(200).send({"dailyevent":result1,"mainevent":result2})
   })
 router.post('/events',urlencodedParser, (req, res) => {
@@ -143,7 +143,7 @@ router.post('/events',urlencodedParser, (req, res) => {
     DateTo: req.body.dateto,
     Images: req.body.images,
     Content: {
-      Intro: req.body.intro,
+      Intro: req.body.intro||null,
       Description: req.body.description
     },
     Dailyevent: req.body.event
@@ -186,19 +186,6 @@ router.post('/form',authentication,urlencodedParser,(req,res)=>{
     anyOtherComm: req.body.comm,
     PHOTO:req.user.PHOTO
   })
-  // var mailOptions = {
-  //   from: 'youremail@gmail.com',
-  //   to: req.user.email,
-  //   subject: 'Your recruitment form was submitted',
-  //   text: 'That was easy!'
-  // }
-  // transporter.sendMail(mailOptions, function(error, info){
-  //   if (error) {
-  //     console.log(error);
-  //   } else {
-  //     console.log('Email sent: ' + info.response);
-  //   }
-  // });
   nrecruit.save().then(()=>{
     res.status(200).send({
       "success": true
@@ -330,7 +317,7 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
     data: {
     "meet": req.body.meet,
     "title": "Recruitment Interaction Invite",
-    "body": "You have been called for interaction meet",
+    "body": `You have been called for interaction meet at ${req.body.time}. please tap to confirm!`,
     "type": "meet"
     }
   }
@@ -339,14 +326,25 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
   const  registrationToken = reciever.fcmToken
     
       admin.messaging().sendToDevice(registrationToken, Message)
-      .then( response => {
-
+      .then( async (response) => {
+        try {        
+          const payload = { 
+                     time: req.body.time, 
+                     "title": "Recruitment Interaction Invite",
+                     "body": `You have schduled meet right in 10 mins`,
+                     "meet": req.body.meet,
+                    body: req.body.body,
+                  };
+        await schedule.createSchedule(payload,registrationToken,req.user.fcmToken);
+      } catch (e) { 
+        res.status(400).json({ "success": false});   
+       }
        console.log("Notification sent successfully")
        var mailOptions = {
         from: 'nssbitstech@gmail.com',
         to: req.body.email,
         subject: 'You have been called for interaction meet',
-        text: 'blah blah'
+        text: ''
       }
       transporter.sendMail(mailOptions, function(error, info){
       if (error) {
