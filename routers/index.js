@@ -277,7 +277,7 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     console.log(reciever.fcmToken)
     const Message={
       data: {
-      "title":"Selected",
+      "title":"Recruitment Update",
       "body":`You have been selected into department ${doc.preference.first} as per your form`,
       "type": "info"
       }
@@ -316,7 +316,8 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
 router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
   const Message = {
     "link": req.body.meet,
-    "title": "meet link",
+    "title": "Recruitment Interaction Invite",
+    "body": "You have been called interaction meet",
     "type": "meet"
   }
   const reciever = await User.findOne({email:req.body.email})
