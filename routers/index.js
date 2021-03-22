@@ -4,6 +4,7 @@ const router = new express.Router()
 const bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
 var nodemailer = require('nodemailer');
+const schedule = require('./../schedule')
 //firebase admin sdk
 var admin = require("firebase-admin");
 
