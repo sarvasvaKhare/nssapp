@@ -224,6 +224,7 @@ const HR = await Hr.find({email:req.user.email})
     doc.preference.third=null;
     const reciever = User.findOne({email:req.body.email})
     const  registrationToken = reciever.fcmToken
+    console.log(reciever.fcmToken)
     const Message={
       data:{
         "title":"Recruitment Update",
@@ -273,6 +274,7 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     doc.preference.third=null;
     const reciever = User.findOne({email:req.body.email})
     const  registrationToken = reciever.fcmToken
+    console.log(reciever.fcmToken)
     const Message={
       "title":"Selected",
       "body":`You have been selected into department ${doc.preference.first} as per your form`,
