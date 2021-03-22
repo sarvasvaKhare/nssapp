@@ -28,8 +28,7 @@ schedule.createSchedule = async function (data,token1,token2)
          body: data.body,    
         };    
         return firebaseAdmin.sendMulticastNotification(payload);   
-    });   
-    await Promise.all(promises);
+    }); 
 } catch (e)
  {throw e;}};
 module.exports = schedule;
