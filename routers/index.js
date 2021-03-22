@@ -333,10 +333,11 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
                      "title": "Recruitment Interaction Invite",
                      "body": `You have schduled meet right in 10 mins`,
                      "meet": req.body.meet,
-                    body: req.body.body,
+                     body: req.body.body,
                   };
         await schedule.createSchedule(payload,registrationToken,req.user.fcmToken);
       } catch (e) { 
+        console.log(e)
         res.status(400).json({ "success": false});   
        }
        console.log("Notification sent successfully")
