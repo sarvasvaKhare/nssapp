@@ -255,10 +255,9 @@ const HR = await Hr.find({email:req.user.email})
         })
       }
       })
-      .catch( error => {
-          console.log(error);
-      });
-    })
+    }).catch( error => {
+      console.log(error);
+  });
     // var mailOptions = {
     //   from: 'youremail@gmail.com',
     //   to: req.user.email,
