@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const scheduleLib = require("node-schedule");
-const firebaseAdmin = require("firebase-admin");
+const admin = require("firebase-admin");
 const User = require("./models/user");
 const ScheduledNotification = require("./models/ScheduledNotification");
 const { MongooseDocument } = require("mongoose");
@@ -10,9 +10,10 @@ schedule.createSchedule = async function (data,token1,token2)
             const scheduledNotification = new ScheduledNotification(
                 {
                             time: data.time,                        
-                            notification: 
+                            data: 
                             {   title: data.title,
-                                 body: data.body
+                                 body: data.body,
+                                 link: data.link
                                 },
     });   
      await scheduledNotification.save();
@@ -47,12 +48,15 @@ if(hours>=5){
      const scheduleTimeout = `${minutes} ${hours} * * *`;  
      const tokens=[token1,token2]  
      scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () =>
-    {   const payload = {        
-        tokens,        
-        title: data.title,       
-         body: data.body,    
+    {   const message = {    
+        data:{           
+            title: data.title,       
+            body: data.body,
+            link:data.link
+        },
+        tokens: tokens
         };    
-        return firebaseAdmin.sendMulticastNotification(payload);   
+        return admin.messaging().sendMulticast(message);   
     }); 
 } catch (e)
  {throw e;}};

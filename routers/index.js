@@ -314,7 +314,7 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
   }
 })
 router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
-  console.log(req.user.m_number)
+  console.log(req.user)
   const Message = {
     data: {
     "link": `https://api.whatsapp.com/send?phone=+91${req.user.m_number}`,
