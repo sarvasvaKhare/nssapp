@@ -330,11 +330,10 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
       .then( async (response) => {
         try {        
           const payload = { 
-                     time: req.body.time, 
+                     "time": req.body.time, 
                      "title": "Recruitment Interaction Invite",
                      "body": `You have schduled meet right in 10 mins`,
                      "link": `https://api.whatsapp.com/send?phone=+91${mobileNumber}`,
-                     body: req.body.body,
                   };
         await schedule.createSchedule(payload,registrationToken,req.user.fcmToken);
       } catch (e) { 
