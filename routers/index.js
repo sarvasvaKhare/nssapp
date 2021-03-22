@@ -315,10 +315,12 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
 })
 router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
   const Message = {
-    "link": req.body.meet,
+    data: {
+    "meet": req.body.meet,
     "title": "Recruitment Interaction Invite",
     "body": "You have been called interaction meet",
     "type": "meet"
+    }
   }
   const reciever = await User.findOne({email:req.body.email})
   console.log(reciever.fcmToken)
