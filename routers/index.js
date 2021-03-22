@@ -316,10 +316,10 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
 router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
   const Message = {
     data: {
-    "meet": req.body.meet,
+    "link": `https://api.whatsapp.com/send?phone=+91${mobileNumber}`,
     "title": "Recruitment Interaction Invite",
     "body": `You have been called for interaction meet at ${req.body.time}. please tap to confirm!`,
-    "type": "meet"
+    "type": "link"
     }
   }
   const reciever = await User.findOne({email:req.body.email})
@@ -333,7 +333,7 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
                      time: req.body.time, 
                      "title": "Recruitment Interaction Invite",
                      "body": `You have schduled meet right in 10 mins`,
-                     "meet": req.body.meet,
+                     "link": `https://api.whatsapp.com/send?phone=+91${mobileNumber}`,
                      body: req.body.body,
                   };
         await schedule.createSchedule(payload,registrationToken,req.user.fcmToken);
