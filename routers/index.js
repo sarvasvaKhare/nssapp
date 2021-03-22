@@ -311,7 +311,7 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     res.status(403).send({"msg":"unauthori"})
   }
 })
-router.post('/meet',authentication,urlencodedParser,(req,res)=>{
+router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
   const Message = {
     "link": req.body.meet,
     "title": "meet link",
