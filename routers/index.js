@@ -173,9 +173,13 @@ router.post('/form',authentication,urlencodedParser,(req,res)=>{
     alternateemail:req.body.alternateemail,
     preference: {
         first:req.body.first,
+        Reason1: req.body.reason1,
         second:req.body.second,
+        Reason2: req.body.reason2,
+        Reason3: req.body.reason3,
         third:req.body.third
     },
+    anyOtherComm: req.body.comm,
     PHOTO:req.user.PHOTO
   })
   // var mailOptions = {
@@ -299,10 +303,9 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     res.status(403).send({"msg":"unauthori"})
   }
 })
-router.post('meet',authentication,urlencodedParser,(req,res)=>{
+router.post('/meet',authentication,urlencodedParser,(req,res)=>{
   const Message = {
-    "link": req.body.link,
-    "time": req.body.time,
+    "link": req.body.meet,
     "title": "meet link"
   }
   const reciever = User.findOne({email:req.body.email})

@@ -10,9 +10,13 @@ const recruitSchema = new mongoose.Schema({
     alternateemail:String,
     preference: {
         first:String,
+        Reason1:String,
         second:String,
-        third:String
+        Reason2:String,
+        third:String,
+        Reason3:String,
     },
+    anyOtherComm:String,
     PHOTO: String
 });
 
