@@ -222,7 +222,7 @@ const HR = await Hr.find({email:req.user.email})
     doc.preference.first=doc.preference.second;
     doc.preference.second=doc.preference.third;
     doc.preference.third=null;
-    const reciever = User.findOne({email:req.body.email})
+    const reciever = await User.findOne({email:req.body.email})
     const  registrationToken = reciever.fcmToken
     console.log(reciever.fcmToken)
     const Message={
@@ -272,7 +272,7 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     console.log(doc)
     doc.preference.second="accepted";
     doc.preference.third=null;
-    const reciever = User.findOne({email:req.body.email})
+    const reciever = await User.findOne({email:req.body.email})
     const  registrationToken = reciever.fcmToken
     console.log(reciever.fcmToken)
     const Message={
@@ -317,7 +317,7 @@ router.post('/meet',authentication,urlencodedParser,(req,res)=>{
     "title": "meet link",
     "type": "meet"
   }
-  const reciever = User.findOne({email:req.body.email})
+  const reciever = await User.findOne({email:req.body.email})
   console.log(reciever.fcmToken)
   const  registrationToken = reciever.fcmToken
     
