@@ -386,7 +386,7 @@ router.post("/updatefcm",authentication,urlencodedParser, async (req,res)=>{
   })
 })
 router.get("/department",authentication,urlencodedParser, async (req,res)=>{
-  const dept = req.body.dept
+  const dept = req.query.dept
   const data = await department.findOne({"dept":dept})
   res.status(200).send(data)
 })
