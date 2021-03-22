@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const scheduleLib = require("node-schedule");
-const firebaseAdmin = require("./firebaseAdmin");
+const firebaseAdmin = require("firebase-admin");
 const User = require("./models/user");
 const ScheduledNotification = require("./models/ScheduledNotification");
 const schedule = {};
