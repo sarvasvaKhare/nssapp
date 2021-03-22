@@ -276,9 +276,11 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     const  registrationToken = reciever.fcmToken
     console.log(reciever.fcmToken)
     const Message={
+      data: {
       "title":"Selected",
       "body":`You have been selected into department ${doc.preference.first} as per your form`,
       "type": "info"
+      }
     }
       admin.messaging().sendToDevice(registrationToken, Message)
       .then( response => {
