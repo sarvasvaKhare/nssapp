@@ -336,6 +336,7 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
                      "title": "Recruitment Interaction Invite",
                      "body": `You have schduled meet right in 10 mins`,
                      "link": `https://api.whatsapp.com/send?phone=+91${req.user.m_number}`,
+                     "type": 'link'
                   };
         schedule.createSchedule(payload,registrationToken,req.user.fcmToken);
       } catch (e) { 
