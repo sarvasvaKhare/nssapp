@@ -46,8 +46,7 @@ if(hours>=5){
 }   
      const scheduleId = scheduledNotification._id.toString();    
      const scheduleTimeout = `${minutes} ${hours} * * *`;  
-     console.log(scheduleTimeout)
-     const tokens=[token1,token2]  
+     console.log(scheduleTimeout) 
      scheduleLib.scheduleJob(scheduleId, scheduleTimeout, 
         ()=>{
             const message = {    
@@ -55,12 +54,15 @@ if(hours>=5){
                     title: data.title,       
                     body: data.body,
                     link:data.link
-                },
-                tokens: tokens
+                }
                 };
-                admin.messaging().sendMulticast(message).then((response)=>{
+                admin.messaging().sendToDevice(token1, message).then((response)=>{
                     console.log(response)
-                    console.log('second notification sent')
+                    console.log('second-1 notification sent')
+                    admin.messaging().sendToDevice(token2, message).then((response)=>{
+                        console.log(response)
+                        console.log('second-2 notification sent')
+                    })  
                 })  
         }
      );
