@@ -328,7 +328,8 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
     
       admin.messaging().sendToDevice(registrationToken, Message)
       .then( async (response) => {
-        try {        
+        try {     
+          console.log(response)   
           console.log(req.user["m_number"])
           const payload = { 
                      "time": req.body.time, 
