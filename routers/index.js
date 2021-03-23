@@ -330,7 +330,7 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
       admin.messaging().sendToDevice(registrationToken, Message)
       .then( async (response) => {
         try {        
-          console.log(req.user.m_number)
+          console.log(req.user["m_number"])
           const payload = { 
                      "time": req.body.time, 
                      "title": "Recruitment Interaction Invite",
