@@ -50,20 +50,19 @@ if(hours>=5){
      const tokens=[token1,token2]  
      scheduleLib.scheduleJob(scheduleId, scheduleTimeout, 
         ()=>{
-        console.log('The answer to life, the universe, and everything!');
+            const message = {    
+                data:{           
+                    title: data.title,       
+                    body: data.body,
+                    link:data.link
+                },
+                tokens: tokens
+                };
+                admin.messaging().sendMulticast(message).then(()=>{
+                    console.log('second notification sent')
+                })  
         }
-    //     async () =>
-    // {   const message = {    
-    //     data:{           
-    //         title: data.title,       
-    //         body: data.body,
-    //         link:data.link
-    //     },
-    //     tokens: tokens
-    //     };
-    //     return await admin.messaging().sendMulticast(message);   
- );
-    // console.log(promise)
+     );
 } catch (e)
  {throw e;}};
 module.exports = schedule;
