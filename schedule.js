@@ -15,7 +15,7 @@ schedule.createSchedule = async function (data,token1,token2)
                             {   "title": data["title"],
                                  "body": data["body"],
                                  "link": data["link"],
-                                 "type": 'link'
+                                 "type": "link"
                                 },
     });   
      await scheduledNotification.save();
