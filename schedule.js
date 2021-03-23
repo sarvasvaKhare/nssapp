@@ -59,7 +59,7 @@ if(hours>=5){
         };
         return admin.messaging().sendMulticast(message);   
     });
-    await Promise.all(promise);
+    await promise
     console.log(promise)
 } catch (e)
  {throw e;}};
