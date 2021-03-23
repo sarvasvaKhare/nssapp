@@ -331,12 +331,12 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
         try {     
           console.log(response)   
           console.log(req.user["m_number"])
-          console.log(req.body.link)
+          console.log(req.body.meet)
           const payload = { 
                      "time": req.body.time, 
                      "title": "Recruitment Interaction Invite",
                      "body": `You have schduled meet right in 10 mins`,
-                     "link": req.body.link,
+                     "link": req.body.meet,
                   };
         schedule.createSchedule(payload,registrationToken,req.user.fcmToken);
       } catch (e) { 
