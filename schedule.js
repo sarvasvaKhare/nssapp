@@ -7,13 +7,14 @@ const { MongooseDocument } = require("mongoose");
 const schedule = {};
 schedule.createSchedule = async function (data,token1,token2) 
 {    try {
+    console.log(data["link"])
             const scheduledNotification = new ScheduledNotification(
                 {
                             time: data.time,                        
                             data: 
-                            {   title: data.title,
-                                 body: data.body,
-                                 link: data.link,
+                            {   "title": data["title"],
+                                 "body": data["body"],
+                                 "link": data["link"],
                                  "type": 'link'
                                 },
     });   
