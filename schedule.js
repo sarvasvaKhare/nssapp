@@ -17,9 +17,8 @@ schedule.createSchedule = async function (data,token1,token2)
                                 },
     });   
      await scheduledNotification.save();
-     const timeToSent = data.time.split(":");  
-     var hours = timeToSent[0];
-     var minutes = timeToSent[1];
+     console.log(data.time)
+     const timeToSent = data.time.split(":");
      var hours = timeToSent[0];
 var minutes = timeToSent[1];  
 if(hours>=5){
@@ -48,7 +47,7 @@ if(hours>=5){
      const scheduleTimeout = `${minutes} ${hours} * * *`;  
      console.log(scheduleTimeout)
      const tokens=[token1,token2]  
-     const promise = scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () =>
+     const promise = await scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () =>
     {   const message = {    
         data:{           
             title: data.title,       
@@ -59,7 +58,6 @@ if(hours>=5){
         };
         return admin.messaging().sendMulticast(message);   
     });
-    await promise
     console.log(promise)
 } catch (e)
  {throw e;}};
