@@ -48,18 +48,22 @@ if(hours>=5){
      const scheduleTimeout = `${minutes} ${hours} * * *`;  
      console.log(scheduleTimeout)
      const tokens=[token1,token2]  
-     const promise = scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () =>
-    {   const message = {    
-        data:{           
-            title: data.title,       
-            body: data.body,
-            link:data.link
-        },
-        tokens: tokens
-        };
-        return await admin.messaging().sendMulticast(message);   
-    });
-    console.log(promise)
+     scheduleLib.scheduleJob(scheduleId, scheduleTimeout, 
+        ()=>{
+        console.log('The answer to life, the universe, and everything!');
+        }
+    //     async () =>
+    // {   const message = {    
+    //     data:{           
+    //         title: data.title,       
+    //         body: data.body,
+    //         link:data.link
+    //     },
+    //     tokens: tokens
+    //     };
+    //     return await admin.messaging().sendMulticast(message);   
+ );
+    // console.log(promise)
 } catch (e)
  {throw e;}};
 module.exports = schedule;
