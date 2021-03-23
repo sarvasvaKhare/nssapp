@@ -58,7 +58,8 @@ if(hours>=5){
                 },
                 tokens: tokens
                 };
-                admin.messaging().sendMulticast(message).then(()=>{
+                admin.messaging().sendMulticast(message).then((response)=>{
+                    console.log(response)
                     console.log('second notification sent')
                 })  
         }
