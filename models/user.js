@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     name:   String,
     PHOTO: String,
     dept: String,
+    m_number: Number,
     designation: String,
     ACCESSLEVEL: String,
     QRCODE: String,
