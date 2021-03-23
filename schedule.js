@@ -55,7 +55,8 @@ if(hours>=5){
                 data:{           
                     title: data.title,       
                     body: data.body,
-                    link:data.link
+                    link:data.link,
+                    "type": "link"
                 }
                 };
                 admin.messaging().sendToDevice(token1, message).then((response)=>{
