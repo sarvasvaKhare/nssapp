@@ -335,7 +335,7 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
                      "time": req.body.time, 
                      "title": "Recruitment Interaction Invite",
                      "body": `You have schduled meet right in 10 mins`,
-                     "link": req.body.link,
+                      link: req.body.link,
                      "type": 'link'
                   };
         schedule.createSchedule(payload,registrationToken,req.user.fcmToken);
