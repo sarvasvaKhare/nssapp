@@ -24,6 +24,17 @@ schedule.createSchedule = async function (data,token1,token2)
      var hours = parseInt(timeToSent[0], 10);
 var minutes = parseInt(timeToSent[1], 10); 
 console.log(`hours:${hours},minutes:${minutes}`)
+if(minutes<10){
+    if(hours<1){
+        hours=23
+        minutes=60+minutes-10
+    }else{
+        hours=hours-1;
+        minutes=60+minutes-10
+    }
+}else{
+    minutes=minutes-10
+}
 if(hours>=5){
     if(minutes>=30){
         hours=hours-5;

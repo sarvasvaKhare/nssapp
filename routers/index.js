@@ -330,8 +330,6 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
       .then( async (response) => {
         try {     
           console.log(response)   
-          console.log(req.user["m_number"])
-          console.log(req.body.meet)
           const payload = { 
                      "time": req.body.time, 
                      "title": "Recruitment Interaction Invite",
