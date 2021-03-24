@@ -66,9 +66,13 @@ router.post('/login', urlencodedParser, async (req, res) => {
             dep=tperson.dept
             mem=true;
           tperson.ACCESSLEVEL=tperson.dept.concat(tperson.designation)
-          tperson.save()
+          tperson.save().then((doc)=>{
+            console.log(doc)
+          })
           }
-          user.save()
+          user.save().then((doc)=>{
+            console.log(doc)
+          })
           token = jwt.sign({ EMAIL: email }, 'sarvasva')
         } else {
           const d = new Date()
