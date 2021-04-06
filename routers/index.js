@@ -217,6 +217,7 @@ const HR = await Hr.find({email:req.user.email})
     doc.preference.third=null;
     const reciever = await User.findOne({email:req.body.email})
     const  registrationToken = reciever.fcmToken
+    if(registrationToken){
     console.log(reciever.fcmToken)
     const Message={
       data:{
@@ -250,19 +251,26 @@ const HR = await Hr.find({email:req.user.email})
     }).catch( error => {
       console.log(error);
   });
-    // var mailOptions = {
-    //   from: 'youremail@gmail.com',
-    //   to: req.user.email,
-    //   subject: 'Your recruitment form was submitted',
-    //   text: 'That was easy!'
-    // }
-    // transporter.sendMail(mailOptions, function(error, info){
-    //   if (error) {
-    //     console.log(error);
-    //   } else {
-    //     console.log('Email sent: ' + info.response);
-    //   }
-    // });
+}else{
+  var mailOptions = {
+    from: 'nssbitstech@gmail.com',
+    to: req.body.email,
+    subject: 'Recruitment Update',
+    text: `You are now being considered for department ${doc.preference.first}`
+  }
+  transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+    doc.save().then(()=>{
+      res.status(200).send({"success":true})
+    }).catch((err)=>{
+      res.status(400).send({"msg":"error in rejecting"})
+    })
+  }
+  })
+}
   }else{
     res.status(403).send({"msg":"unauthorized"})
   }
@@ -278,6 +286,7 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     doc.preference.third=null;
     const reciever = await User.findOne({email:req.body.email})
     const  registrationToken = reciever.fcmToken
+    if(registrationToken){
     console.log(reciever.fcmToken)
     const Message={
       data: {
@@ -312,7 +321,22 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
       .catch( error => {
           console.log(error);
       });
-    
+    }else{
+      var mailOptions = {
+        from: 'nssbitstech@gmail.com',
+        to: req.body.email,
+        subject: 'Recruitment Update',
+        text: `You have been selected into department ${doc.preference.first} as per your form.`
+      }
+      transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+        res.status(200).send({"success":true})
+      }
+  })
+    }
   }else{
     res.status(403).send({"msg":"unauthori"})
   }
@@ -329,7 +353,7 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
   const reciever = await User.findOne({email:req.body.email})
   console.log(reciever.fcmToken)
   const  registrationToken = reciever.fcmToken
-    
+  if(registrationToken){
       admin.messaging().sendToDevice(registrationToken, Message)
       .then( async (response) => {
         try {     
@@ -366,8 +390,25 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
       .catch( error => {
           console.log(error);
       });
-
-  
+    }else{
+      var mailOptions = {
+        from: 'nssbitstech@gmail.com',
+        to: req.body.email,
+        subject: 'You have been called for interaction meet',
+        text: `Congratulations ${reciever.email} you have advanced to the next round of recruitments.  Kindly join this meet link ${req.body.link} at ${req.body.time} for further proceedings or contact ${req.user.m_number} for any queries regarding change if timing
+        In the meanwhile you are requested to kindly NSS app https://play.google.com/store/apps/details?id=org.nss.nss_app from playstore for further updates about the process. The respective departments would be communicating with you through the app only. Hence it is an earnest request to be install the app as soon as possible
+        Warm regards 
+        NSS BITS pilani`
+      }
+      transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+      console.log(error);
+      } else {
+      console.log('Email sent: ' + info.response);
+      res.status(200).send({"success":true})
+      }
+  })
+    } 
 })
 router.get('/recruited',authentication,urlencodedParser, async (req,res)=>{
   const list= await Recruit.find({"preference.first":req.user.dept,"preference.second":"accepted"})
