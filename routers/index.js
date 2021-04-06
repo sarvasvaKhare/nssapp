@@ -216,9 +216,8 @@ const HR = await Hr.find({email:req.user.email})
     doc.preference.second=doc.preference.third;
     doc.preference.third=null;
     const reciever = await User.findOne({email:req.body.email})
+    if(reciever){
     const  registrationToken = reciever.fcmToken
-    if(registrationToken){
-    console.log(reciever.fcmToken)
     const Message={
       data:{
         "title":"Recruitment Update",
@@ -285,9 +284,8 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     doc.preference.second="accepted";
     doc.preference.third=null;
     const reciever = await User.findOne({email:req.body.email})
+    if(reciever){
     const  registrationToken = reciever.fcmToken
-    if(registrationToken){
-    console.log(reciever.fcmToken)
     const Message={
       data: {
       "title":"Recruitment Update",
@@ -351,9 +349,8 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
     }
   }
   const reciever = await User.findOne({email:req.body.email})
-  console.log(reciever.fcmToken)
-  const  registrationToken = reciever.fcmToken
-  if(registrationToken){
+  if(reciever){
+      const  registrationToken = reciever.fcmToken
       admin.messaging().sendToDevice(registrationToken, Message)
       .then( async (response) => {
         try {     
