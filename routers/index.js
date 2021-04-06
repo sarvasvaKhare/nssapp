@@ -392,7 +392,7 @@ router.post('/meet',authentication,urlencodedParser, async (req,res)=>{
         from: 'nssbitstech@gmail.com',
         to: req.body.email,
         subject: 'You have been called for interaction meet',
-        text: `Congratulations ${reciever.email} you have advanced to the next round of recruitments.  Kindly join this meet link ${req.body.link} at ${req.body.time} for further proceedings or contact ${req.user.m_number} for any queries regarding change if timing
+        text: `Congratulations ${req.body.email} you have advanced to the next round of recruitments.  Kindly join this meet link ${req.body.link} at ${req.body.time} for further proceedings or contact ${req.user.m_number} for any queries regarding change if timing
         In the meanwhile you are requested to kindly NSS app https://play.google.com/store/apps/details?id=org.nss.nss_app from playstore for further updates about the process. The respective departments would be communicating with you through the app only. Hence it is an earnest request to be install the app as soon as possible
         Warm regards 
         NSS BITS pilani`
