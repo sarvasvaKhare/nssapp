@@ -298,21 +298,22 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
 
        console.log("Notification sent successfully")
        doc.save().then(()=>{
-        var mailOptions = {
-          from: 'nssbitstech@gmail.com',
-          to: req.body.email,
-          subject: 'Recruitment Update',
-          text: `You have been selected into department ${doc.preference.first} as per your form`
-        }
-        transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-          res.status(200).send({"success":true})
-        }
-    }); 
-      }).catch((err)=>{
+    //     var mailOptions = {
+    //       from: 'nssbitstech@gmail.com',
+    //       to: req.body.email,
+    //       subject: 'Recruitment Update',
+    //       text: `You have been selected into department ${doc.preference.first} as per your form`
+    //     }
+    //     transporter.sendMail(mailOptions, function(error, info){
+    //     if (error) {
+    //       console.log(error);
+    //     } else {
+    //       console.log('Email sent: ' + info.response);
+    //       res.status(200).send({"success":true})
+    //     }
+    // }); 
+    //   
+  }).catch((err)=>{
         res.status(400).send({"msg":"error in accepting"})
       })
       })
@@ -320,20 +321,20 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
           console.log(error);
       });
     }else{
-      var mailOptions = {
-        from: 'nssbitstech@gmail.com',
-        to: req.body.email,
-        subject: 'Recruitment Update',
-        text: `You have been selected into department ${doc.preference.first} as per your form.`
-      }
-      transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-        res.status(200).send({"success":true})
-      }
-  })
+  //     var mailOptions = {
+  //       from: 'nssbitstech@gmail.com',
+  //       to: req.body.email,
+  //       subject: 'Recruitment Update',
+  //       text: `You have been selected into department ${doc.preference.first} as per your form.`
+  //     }
+  //     transporter.sendMail(mailOptions, function(error, info){
+  //     if (error) {
+  //       console.log(error);
+  //     } else {
+  //       console.log('Email sent: ' + info.response);
+  //       res.status(200).send({"success":true})
+  //     }
+  // })
     }
   }else{
     res.status(403).send({"msg":"unauthori"})
