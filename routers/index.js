@@ -324,7 +324,7 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
     }else{
       doc.save().then(()=>{
         res.status(200).send({"success":true})
-      }
+      })
   //     var mailOptions = {
   //       from: 'nssbitstech@gmail.com',
   //       to: req.body.email,
