@@ -322,7 +322,9 @@ router.post('/accept',authentication,urlencodedParser, async (req,res)=>{
           console.log(error);
       });
     }else{
-      res.status(200).send({"success":true})
+      doc.save().then(()=>{
+        res.status(200).send({"success":true})
+      }
   //     var mailOptions = {
   //       from: 'nssbitstech@gmail.com',
   //       to: req.body.email,
