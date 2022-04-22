@@ -120,7 +120,7 @@ router.get('/profile', authentication, (req, res) => {
 })
 router.get('/contacts', (req, res) => {
   // res.status(200).json(result)
-  User.find({ designation: { $exists: true } },(err, results) => {
+  User.find({ Designation: { $exists: true } },(err, results) => {
     if (err) {
       console.log(err)
     } else {
